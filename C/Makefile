@@ -12,7 +12,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -fsanitize=address
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 	@echo $$'\n✅ \033[1;32mproject compiled\033[0m ✅'
 
 %.o: %.c
