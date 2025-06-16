@@ -1,64 +1,28 @@
-# Assembleur et options
-AS=nasm
-ASFLAGS=-f elf64
+NAME = Colleen
+SRCS = Colleen.s
+OBJS = $(SRCS:.s=.o)
 
-# Compilateur et options
-CC=gcc
-CFLAGS=-Wall -Wextra -Werror
+ASM_CC = nasm
+ASMFLAGS = -f elf64
 
-# Archiveur (pour créer la bibliothèque statique)
-AR=ar
-ARFLAGS=rcs
+all: $(NAME)
 
-# Commande de suppression
-RM=rm -f
+$(NAME): $(OBJS)
+	@gcc -no-pie -o $@ $^
+	@echo $$'\n✅ \033[1;32mproject compiled\033[0m ✅'
 
-# Nom de la bibliothèque
-NAME=libasm.a
-
-# Nom de l'exécutable de test
-TEST_EXEC=test_libasm
-
-# Fichiers sources ASM
-SRC=           ft_read.s \
-				ft_strcmp.s \
-				ft_strcpy.s \
-				ft_strlen.s \
-				ft_write.s \
-				ft_strdup.s
-
-# Fichier source du main de test
-MAIN_SRC=main.c
-
-# Liste des fichiers objets (transformation de .s en .o)
-OBJ=$(SRC:.s=.o)
-
-# Règle par défaut (compilation de la bibliothèque et de l'exécutable)
-.PHONY: all
-all: $(NAME) $(TEST_EXEC)
-
-# Compilation des fichiers .s en fichiers .o
 %.o: %.s
-	$(AS) $(ASFLAGS) -o $@ $<
+	@$(ASM_CC) $(ASMFLAGS) $< -o $@
+	@echo -n "• "
 
-# Création de la bibliothèque statique à partir des objets
-$(NAME): $(OBJ)
-	$(AR) $(ARFLAGS) $@ $^
-
-# Compilation du programme de test avec `-l asm`
-$(TEST_EXEC): $(MAIN_SRC) $(NAME)
-	$(CC) $(CFLAGS) -o $(TEST_EXEC) $(MAIN_SRC) -L. -lasm
-
-# Nettoyage des fichiers objets générés
-.PHONY: clean
 clean:
-	$(RM) $(OBJ) $(TEST_EXEC)
+	@rm -f $(OBJS)
+	@echo -e "\033[1;31m🧹 cleaned objects\033[0m"
 
-# Nettoyage complet : suppression des fichiers objets et de la bibliothèque
-.PHONY: fclean
 fclean: clean
-	$(RM) $(NAME)
+	@rm -f $(NAME)
+	@echo -e "\033[1;31m🗑️ removed $(NAME)\033[0m"
 
-# Recompilation complète : suppression des fichiers générés et recompilation
-.PHONY: re
 re: fclean all
+
+.PHONY: all clean fclean re
