@@ -10,7 +10,6 @@ int called_function()
 
 int main ()
 {
-    //    */%c    char *s = %c%s%c;%c    printf(s,10,10,10,10,10,10,10,10,10,10,10,10,10,10,34,s,34,10,10);%c    called_function();%c    return (0);%c}%c";
     /*
         Comment in the Function 
     */ 
